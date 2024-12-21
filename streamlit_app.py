@@ -6,6 +6,15 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.model_selection import train_test_split as tts
 from sklearn.ensemble import RandomForestClassifier
 
+import sqlite3
+import datetime
+
+zaman=str(datetime.datetime.now())
+conn=sqlite3.connect("trendyorum.sqlite3")
+c=conn.cursor()
+c.execute("CREATE TABLE IF NOT EXISTS testler(yorum TEXT, sonuc TEXT, zaman TEXT)")
+conn.commit()
+
 cv=CountVectorizer(max_features=300)
 rf=RandomForestClassifier()
 
@@ -49,6 +58,14 @@ if btn:
     s=kat.get(sonuc[0])
     st.subheader(s)
     st.write("Model skoru :",skor)
+    c.execute("INSERT INTO testler VALUES(?,?,?)",(yorum,s,zaman))
+    conn.commit()
+
+c.execute("SELECT * FROM testler")
+testler=c.fetchall()
+st.table(testler)
+
+
 kod="""
 import streamlit as st
 import string
@@ -57,6 +74,15 @@ import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.model_selection import train_test_split as tts
 from sklearn.ensemble import RandomForestClassifier
+
+import sqlite3
+import datetime
+
+zaman=str(datetime.datetime.now())
+conn=sqlite3.connect("trendyorum.sqlite3")
+c=conn.cursor()
+c.execute("CREATE TABLE IF NOT EXISTS testler(yorum TEXT, sonuc TEXT, zaman TEXT)")
+conn.commit()
 
 cv=CountVectorizer(max_features=300)
 rf=RandomForestClassifier()
@@ -83,6 +109,7 @@ y=df["Durum"]
 
 x_train,x_test,y_train,y_test=tts(X,y,random_state=42,train_size=0.75)
 
+st.header("E-ticaret Yorum Değerlendirme Uygulaması")
 yorum=st.text_area("Yorum metnini giriniz")
 btn=st.button("Yorumu kategorilendir")
 
@@ -100,8 +127,16 @@ if btn:
     s=kat.get(sonuc[0])
     st.subheader(s)
     st.write("Model skoru :",skor)
+    c.execute("INSERT INTO testler VALUES(?,?,?)",(yorum,s,zaman))
+    conn.commit()
+    
+c.execute("SELECT * FROM testler")
+testler=c.fetchall()
+st.table(testler)
 """
 with st.expander("Kaynak Kodları"):
     st.header("kaynak kodları")
     st.code(kod,language="python")
-#Biz templateden diyoruz
+
+
+
