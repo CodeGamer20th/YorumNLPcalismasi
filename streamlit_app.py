@@ -31,7 +31,7 @@ y=df["Durum"]
 
 x_train,x_test,y_train,y_test=tts(X,y,random_state=42,train_size=0.75)
 
-st.header("E-ticaret Yorum Değerlendirme Uygulaması",color="red")
+st.header("E-ticaret Yorum Değerlendirme Uygulaması")
 yorum=st.text_area("Yorum metnini giriniz")
 btn=st.button("Yorumu kategorilendir")
 
