@@ -100,7 +100,7 @@ if btn:
     st.subheader(s)
     st.write("Model skoru :",skor)
 """
-st.expander("Kaynak Kodları"):
+with st.expander("Kaynak Kodları"):
     st.header("kaynak kodları")
     st.code(kod,language="python")
 #Biz templateden diyoruz
